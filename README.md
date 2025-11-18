@@ -1,90 +1,51 @@
 # 📱 Acees Group - Sistema de Control de Acceso NFC
-EXAMEN PRÁCTICO – UNIDAD III
-Curso: Desarrollo de Aplicaciones Móviles
-Tema: Automatización de calidad con GitHub Actions
-Entrega: Readme.md convertido en PDF con evidencia y documentación
 
-Objetivo
-Implementar un flujo de trabajo (workflow) automatizado en GitHub Actions para realizar análisis de calidad sobre tu proyecto móvil, integrando prácticas de DevOps.
-Actividades a realizar
-1.	Crear repositorio en GitHub
-Crea un repositorio público en GitHub con el nombre exacto:
-SM2_ExamenUnidad3
-2.	Copiar tu proyecto móvil al nuevo repositorio
-Copia todo el contenido de tu proyecto móvil desarrollado durante el curso (archivos y carpetas) al repositorio SM2_ExamenUnidad3.
-Puedes hacerlo manualmente o clonando el repositorio y luego moviendo el código allí.
+Sistema completo de control de acceso con tecnología NFC desarrollado en Flutter con arquitectura MVVM.
 
-3.	Crear el workflow de GitHub Actions
-Dentro de tu proyecto (la raíz), crea las siguientes carpetas en la raíz del repositorio:
-.github/workflows/
-test/
 
-Dentro de workflows, crea un archivo llamado: quality-check.yml
-Dentro de test, crea un archivo llamado: main_test.dart  
-
-4.	Agregar un workflow básico
-El archivo main_test.dart, debe contener al menos 3 prueba unitarias.
-En el archivo quality-check.yml, escribe un flujo de trabajo que se ejecute automáticamente cuando se haga un commit o un pull request.
-Puedes utilizar este ejemplo como plantilla si tu proyecto es Flutter:
-
-------------------------------------------------------------------------------
-name: Quality Check
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  analyze:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.0'  # ajusta a tu versión de Flutter
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Analyze
-        run: flutter analyze
-
-      - name: Run tests
-        run: flutter test
-------------------------------------------------------------------------------
-flutter analyze - Verifica que el código cumpla con las buenas prácticas de estilo, convenciones y que no haya errores sintácticos. Ideal para detectar warnings, imports innecesarios, nombres mal definidos, etc.
-flutter test - Ejecuta las pruebas automatizadas que hayas definido en la carpeta test/. Esto asegura que las funciones críticas de tu app siguen funcionando correctamente tras cada cambio.
-Nota. Si tu proyecto es de otra tecnología (React Native, Kotlin, etc.), adapta el contenido del workflow según corresponda.
-
-5.	Verificar ejecución automática
-Una vez subido el archivo al repositorio, realiza un commit o pull request.
-Luego, verifica que el workflow se haya ejecutado automáticamente desde la pestaña Actions en GitHub.
-Al hacer git push al repositorio en la rama main o al crear un pull request hacia main. GitHub ejecutará automáticamente: flutter analyze sobre todo el proyecto y  flutter test sobre todo el contenido de la carpeta test/
-6.	Resultados para el informe
-el resultado de quality-check.yml debe ser 100% passed, resultados incompletos automáticamente será 0
 Entrega del informe (Readme.md convertido a PDF)
 El informe debe estar realizado en el propio README.md del proyecto y debe contener lo siguiente:
-•	Nombre del curso, Fecha, Nombres completos del estudiante.
-•	URL del repositorio SM2_ExamenUnidad3 en GitHub.
+•	Soluciones Moviles II
+•   Fecha: 18/11/2025, 
+•   Presentado por: Juan Brendon Luna Juarez.
+•	URL del repositorio:https://github.com/LunaJuarezJuan/SM2_ExamenUnidad3.git
 •	Capturas de pantalla que evidencien:
 o	Estructura de carpetas .github/workflows/.
+        ![alt text](imgs/image1.png)
 o	Contenido del archivo quality-check.yml.
+        ![alt text](imgs/image2.png)
+o	Ejecución del flutter test previa subida a Actions.
+        ![alt text](imgs/image3.png)
 o	Ejecución del workflow en la pestaña Actions.
+
+
 •	Explicación de lo realizado:
-Consideraciones
-•	Solo serán evaluados los exámenes que cumplan con los puntos anteriores.
-•	El repositorio debe ser público.
-•	El archivo quality-check.yml debe estar correctamente ubicado en .github/workflows/.
-•	El workflow debe ejecutarse de forma automática.
-•	El informe debe estar en formato PDF y tener una redacción clara.
-En github donde visualizar la ejecución
-•	Ve a tu repositorio en GitHub.
-•	Haz clic en la pestaña “Actions”. Ahí verás una lista de ejecuciones recientes de tu workflow.
-•	Puedes hacer clic sobre una ejecución para ver los pasos, salidas, errores, advertencias, etc.
+<!-- Se añade explicación detallada a continuación -->
+Se implementaron las siguientes acciones para cumplir con los requisitos del examen y permitir pruebas automatizadas:
+
+- Se añadió un workflow de GitHub Actions en `.github/workflows/quality-check.yml` que:
+  - Se ejecuta en push y pull_request sobre la rama `main`.
+  - Instala Flutter, ejecuta `flutter pub get`, luego `flutter analyze` y `flutter test`.
+  - Permite validar automáticamente el código y las pruebas en cada cambio.
+
+- Se agregó la carpeta `test/` con `test/main_test.dart` que contiene al menos 3 pruebas unitarias/widget:
+  - Prueba de renderizado de la vista de login (títulos y campos).
+  - Prueba que muestra el mensaje de error cuando el auth devuelve un error.
+  - Prueba que verifica que se llame al método `login` del objeto de autenticación inyectado.
+
+- Se modificó `lib/views/login_view.dart` para facilitar pruebas:
+  - Se introdujo un parámetro opcional `authOverride` en `LoginView` que permite inyectar un objeto "fake" de autenticación en tests.
+  - Esto evita depender del `Provider` real durante los widget tests y permite verificar `isLoading`, `errorMessage` y la llamada a `login`.
+
+- Cómo verificar localmente y en GitHub:
+  - Local: ejecutar `flutter pub get`, luego `flutter analyze` y `flutter test`.
+  - GitHub: hacer push a `main` o abrir un PR hacia `main`; revisar la pestaña "Actions" → seleccionar "Quality Check" para ver pasos y resultados.
+  - El objetivo del entregable es que el workflow muestre todos los pasos con estado "passed".
+
+
+Consideraciones finales:
+- Asegúrate de que el repositorio sea público y que los archivos añadidos estén en las rutas correctas (`.github/workflows/quality-check.yml`, `test/main_test.dart`).
+- Si cambias nombres de paquete, ajusta imports en los tests (`package:...`) según `pubspec.yaml`.
+
 
 
